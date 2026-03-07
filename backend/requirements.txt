@@ -1,0 +1,7 @@
+flask
+flask-cors
+Pillow
+# Uncomment whichever matches your model:
+# tensorflow       # Keras / SavedModel
+# tflite-runtime   # TFLite (lightweight, good for Pi/server)
+# onnxruntime      # ONNX

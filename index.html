@@ -3,303 +3,299 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="SmartFridge AI — Real-time fruit freshness detection powered by ESP32-CAM and machine learning."/>
-  <title>SmartFridge AI — Know What's Fresh</title>
+  <meta name="description" content="SmartFridge AI — Real-time fruit freshness detection powered by ESP32-CAM."/>
+  <title>SmartFridge AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700;800;900&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-<!-- ══════════════════════
-  NAV
-══════════════════════ -->
-<header class="site-nav" id="siteNav">
-  <div class="nav-inner">
-    <a class="nav-logo" href="#">SmartFridge<span>AI</span></a>
-    <nav class="nav-links">
-      <a href="#features">Features</a>
-      <a href="#how">How it works</a>
-      <a href="#dashboard">Dashboard</a>
-    </nav>
-    <a class="nav-cta" href="#dashboard">View live data →</a>
+<!-- ══════════════ STICKY NAV ══════════════ -->
+<nav class="site-nav">
+  <div class="nav-logo">🥬 <strong>SmartFridgeAI</strong></div>
+  <div class="nav-links">
+    <a href="#why">About</a>
+    <a href="#features">Features</a>
+    <a href="#dashboard">Dashboard</a>
   </div>
-</header>
+  <a class="nav-cta" href="#dashboard">View Live Data</a>
+</nav>
 
+<!-- ══════════════ PAGE WRAPPER ══════════════ -->
+<div class="page-wrapper">
 
-<!-- ══════════════════════
-  HERO
-══════════════════════ -->
-<section class="hero-section">
-  <div class="hero-inner">
-    <div class="hero-eyebrow">
-      <span class="eyebrow-dot"></span>
-      IoT + Machine Learning · ESP32-CAM
+  <!-- ── PANEL 1: HERO ── -->
+  <section class="panel panel-hero reveal">
+
+    <!-- ░░ FRIDGE ANIMATION LAYER ░░ -->
+    <div class="fridge-scene" aria-hidden="true">
+      <!-- CSS fridge body -->
+      <div class="fridge-body">
+        <div class="fridge-inner">
+          <div class="fridge-led"></div>
+          <div class="fridge-shelf" style="top:30%"></div>
+          <div class="fridge-shelf" style="top:58%"></div>
+          <div class="fridge-shelf" style="top:78%"></div>
+          <div class="frost f1"></div>
+          <div class="frost f2"></div>
+          <div class="frost f3"></div>
+        </div>
+        <div class="fridge-handle"></div>
+      </div>
+      <!-- Floating fruits (cloud equivalent) -->
+      <span class="ff ff1">🍎</span>
+      <span class="ff ff2">🍌</span>
+      <span class="ff ff3">🍊</span>
+      <span class="ff ff4">🍎</span>
+      <span class="ff ff5">🍊</span>
+      <span class="ff ff6">🍌</span>
+      <span class="ff ff7">🍎</span>
+      <span class="ff ff8">🍊</span>
+      <!-- Cold particles -->
+      <span class="snow s1">❄</span>
+      <span class="snow s2">❄</span>
+      <span class="snow s3">❄</span>
+      <span class="snow s4">❄</span>
     </div>
-    <h1 class="hero-h1">
-      Know exactly<br/>what's fresh.
-    </h1>
-    <p class="hero-p">
-      SmartFridge AI uses an ESP32-CAM and a lightweight vision model
-      to scan your produce in real time — so you always know what to eat
-      and what to toss.
-    </p>
-    <div class="hero-actions">
-      <a class="btn-primary" href="#dashboard">See live data</a>
-      <a class="btn-ghost"   href="#how">How it works</a>
+
+    <!-- Foreground text -->
+    <div class="hero-content">
+      <div class="hero-eyebrow">Picture this</div>
+      <h1 class="hero-h1">
+        Know what's fresh.<br/>
+        Know what's not.
+      </h1>
+      <p class="hero-body">
+        SmartFridge AI uses an ESP32-CAM and a vision model to detect the
+        freshness of your produce — in real time, in your fridge.
+      </p>
+      <a class="hero-cta" href="#dashboard">See live data ↓</a>
     </div>
+
+  </section>
+
+  <!-- ── PANEL 2: WHY ── -->
+  <section class="panel panel-salmon reveal" id="why">
+    <!-- floating deco images -->
+    <div class="deco deco-tl">⚖️</div>
+    <div class="deco deco-tr">🤔</div>
+    <div class="deco deco-bl">🎤</div>
+    <div class="deco deco-br">📼</div>
+
+    <div class="why-inner">
+      <p class="section-label">Why SmartFridge AI?</p>
+      <p class="why-text">
+        Every year, a third of all food produced is wasted.
+        Most of it starts quietly rotting in someone's fridge.
+      </p>
+      <div class="why-plus">✛</div>
+      <p class="why-text">
+        Oddly, though, nobody tells you when a banana has turned.
+        You find out the hard way. SmartFridge AI is changing that.
+      </p>
+      <div class="why-plus">✛</div>
+      <p class="why-text">
+        With SmartFridge AI, we're giving you eyes inside your fridge.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── PANEL ROW: 2-col ── -->
+  <div class="panel-row" id="features">
+
+    <!-- Left: Antidote card -->
+    <section class="panel panel-peach reveal">
+      <h2 class="card-h2">The antidote to food waste.</h2>
+      <p class="card-p">
+        SmartFridge AI brings active intelligence into your fridge — not guesswork.
+        See every fruit's freshness status before you reach for it.
+      </p>
+      <div class="card-mockup card-mockup-peach">
+        <div class="mock-row"><span class="mock-fruit">🍎</span><span class="mock-label fresh-lbl">Fresh · 94%</span></div>
+        <div class="mock-row"><span class="mock-fruit">🍌</span><span class="mock-label rotten-lbl">Rotten · 87%</span></div>
+        <div class="mock-row"><span class="mock-fruit">🍊</span><span class="mock-label fresh-lbl">Fresh · 91%</span></div>
+      </div>
+    </section>
+
+    <!-- Right: Skills / fruits -->
+    <section class="panel panel-lavender reveal">
+      <h2 class="card-h2">Three fruits.<br/>Tracked precisely.</h2>
+      <p class="card-p">
+        Our vision model is trained and tested on three fruit types.
+        Precision over coverage.
+      </p>
+      <div class="tag-cloud">
+        <span class="tag">🍎 Apple</span>
+        <span class="tag">🍌 Banana</span>
+        <span class="tag">🍊 Orange</span>
+        <span class="tag">Fresh → Rotten</span>
+        <span class="tag">Confidence score</span>
+        <span class="tag">Real-time alerts</span>
+      </div>
+    </section>
+
   </div>
 
-  <!-- subtle illustration row -->
-  <div class="hero-fruits">
-    <div class="hf-item fresh">🍎<span>Fresh</span></div>
-    <div class="hf-item fresh">🍊<span>Fresh</span></div>
-    <div class="hf-item rotten">🍌<span>Rotten</span></div>
-    <div class="hf-item fresh">🍓<span>Fresh</span></div>
-    <div class="hf-item fresh">🍇<span>Fresh</span></div>
-    <div class="hf-item rotten">🥭<span>Rotten</span></div>
+  <!-- ── PANEL ROW 2 ── -->
+  <div class="panel-row">
+
+    <!-- Left: How it works -->
+    <section class="panel panel-blue reveal">
+      <h2 class="card-h2">Instant,<br/>non-stop scanning.</h2>
+      <p class="card-p">
+        The ESP32-CAM automatically photographs your produce.
+        The model classifies it in under 2 seconds.
+        The dashboard reflects it immediately.
+      </p>
+      <div class="steps-mini">
+        <div class="step-mini"><span class="sm-num">01</span><span>Camera captures image</span></div>
+        <div class="step-mini"><span class="sm-num">02</span><span>AI classifies freshness</span></div>
+        <div class="step-mini"><span class="sm-num">03</span><span>Dashboard updates live</span></div>
+      </div>
+    </section>
+
+    <!-- Right: ThingsBoard -->
+    <section class="panel panel-green reveal">
+      <h2 class="card-h2">Real alerts,<br/>real time.</h2>
+      <p class="card-p">
+        Telemetry streams through ThingsBoard MQTT to this dashboard.
+        The moment a banana goes bad, you know.
+      </p>
+      <div class="alert-demo">
+        <div class="ad-row"><span>🍌</span><div><strong>Banana</strong><small>Rotten detected · 87% confidence</small></div><span class="ad-tag rotten">⚠ Alert</span></div>
+        <div class="ad-row fresh-row"><span>🍎</span><div><strong>Apple</strong><small>Fresh confirmed · 94% confidence</small></div><span class="ad-tag fresh">✓ OK</span></div>
+        <div class="ad-row fresh-row"><span>🍊</span><div><strong>Orange</strong><small>Fresh confirmed · 91% confidence</small></div><span class="ad-tag fresh">✓ OK</span></div>
+      </div>
+    </section>
+
   </div>
-</section>
 
-
-<!-- ══════════════════════
-  STATS BAR
-══════════════════════ -->
-<div class="stats-bar">
-  <div class="stats-inner">
-    <div class="sb-item">
-      <div class="sb-num">94<span>%</span></div>
-      <div class="sb-label">Detection accuracy</div>
+  <!-- ── PANEL 5: Made by humans ── -->
+  <section class="panel panel-rose reveal">
+    <div class="rose-inner">
+      <div class="rose-text">
+        <h2 class="card-h2">Built for real life,<br/>not just a demo.</h2>
+        <p class="card-p">
+          This is a real IoT project. The ESP32-CAM is in the fridge.
+          The model runs on-device. The data flows through ThingsBoard.
+          The dashboard reflects your actual fridge, right now.
+          It wasn't trained to impress — it was trained to tell you the truth about your banana.
+        </p>
+      </div>
+      <div class="rose-deco">📷</div>
     </div>
-    <div class="sb-divider"></div>
-    <div class="sb-item">
-      <div class="sb-num">6</div>
-      <div class="sb-label">Fruit types supported</div>
-    </div>
-    <div class="sb-divider"></div>
-    <div class="sb-item">
-      <div class="sb-num">&lt;2<span>s</span></div>
-      <div class="sb-label">Analysis time</div>
-    </div>
-    <div class="sb-divider"></div>
-    <div class="sb-item">
-      <div class="sb-num">24<span>/7</span></div>
-      <div class="sb-label">Always monitoring</div>
-    </div>
-  </div>
-</div>
+  </section>
 
 
-<!-- ══════════════════════
-  WHY SECTION
-══════════════════════ -->
-<section class="why-section" id="features">
-  <div class="section-inner">
-    <div class="section-label">Why SmartFridge AI?</div>
-    <h2 class="section-h2">
-      The antidote to food waste.
-    </h2>
-    <p class="section-p">
-      Every year, a third of all food produced is wasted. Most of it starts in the fridge.
-      SmartFridge AI gives you eyes inside yours — so nothing spoils unnoticed.
-    </p>
-  </div>
-</section>
+</div><!-- /page-wrapper -->
 
-
-<!-- ══════════════════════
-  FEATURES GRID
-══════════════════════ -->
-<section class="features-section">
-  <div class="section-inner">
-    <div class="features-grid">
-
-      <div class="feat-card">
-        <div class="feat-icon">📸</div>
-        <h3>ESP32-CAM scanning</h3>
-        <p>A low-cost camera module captures clear images of your produce. No cloud required — everything runs on-device.</p>
+<!-- ═══ DARK DASHBOARD ═══ -->
+<section class="dash-section" id="dashboard">
+  <div class="dash-topbar">
+    <div class="dtp-inner">
+      <div class="dtp-left">
+        <span class="dtp-title">Live Fridge</span>
+        <div class="dtp-pill"><span class="dtb-dot" id="connDot"></span><span id="connLabel">Connecting…</span></div>
       </div>
-
-      <div class="feat-card">
-        <div class="feat-icon">🧠</div>
-        <h3>Vision AI model</h3>
-        <p>A lightweight machine learning model classifies freshness from visual cues — color, texture, surface defects.</p>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-icon">⚡</div>
-        <h3>Instant results</h3>
-        <p>Analysis completes in under 2 seconds. The dashboard updates in real time, no manual refresh needed.</p>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-icon">📊</div>
-        <h3>Confidence scores</h3>
-        <p>Every result comes with a confidence percentage, so you understand exactly how certain the model is.</p>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-icon">🔔</div>
-        <h3>Rotten alerts</h3>
-        <p>The moment something goes bad, the dashboard flags it with a clear alert — no guessing, no squinting.</p>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-icon">🌐</div>
-        <h3>Web dashboard</h3>
-        <p>Access the live freshness report from any browser on your network. Clean, readable, always up to date.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- ══════════════════════
-  HOW IT WORKS
-══════════════════════ -->
-<section class="how-section" id="how">
-  <div class="section-inner">
-    <div class="section-label">How it works</div>
-    <h2 class="section-h2">Three steps. Zero fuss.</h2>
-
-    <div class="steps-row">
-      <div class="step-card">
-        <div class="step-num">01</div>
-        <div class="step-icon">📷</div>
-        <h3>Camera captures</h3>
-        <p>The ESP32-CAM module automatically photographs your produce on a set schedule or on demand.</p>
-      </div>
-      <div class="step-arrow">→</div>
-      <div class="step-card">
-        <div class="step-num">02</div>
-        <div class="step-icon">🔍</div>
-        <h3>AI classifies</h3>
-        <p>The vision model analyses the image and classifies each fruit as fresh or rotten with a confidence score.</p>
-      </div>
-      <div class="step-arrow">→</div>
-      <div class="step-card">
-        <div class="step-num">03</div>
-        <div class="step-icon">📱</div>
-        <h3>You're informed</h3>
-        <p>The dashboard updates instantly. Rotten items are flagged. Fresh items confirmed. You act on facts, not guesses.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ══════════════════════
-  QUOTE
-══════════════════════ -->
-<section class="pull-quote-section">
-  <div class="section-inner">
-    <blockquote class="pull-quote">
-      "We built this because we were tired of discovering furry mangoes at the back of the fridge."
-    </blockquote>
-    <div class="pq-author">— The SmartFridge AI team</div>
-  </div>
-</section>
-
-
-<!-- ══════════════════════
-  DASHBOARD (live data)
-══════════════════════ -->
-<section class="dashboard-section" id="dashboard">
-
-  <!-- Nav -->
-  <div class="db-header">
-    <div class="dbh-inner">
-      <div class="dbh-left">
-        <h2 class="db-title">Live dashboard</h2>
-        <div class="db-live-pill">
-          <span class="live-dot"></span>
-          ESP32-CAM · live
+      <div class="dtp-center">
+        <div class="fruit-selector" id="fruitSelector">
+          <button class="fs-btn active" data-fruit="apple"  onclick="setFruit('apple')">🍎 Apple</button>
+          <button class="fs-btn"        data-fruit="banana" onclick="setFruit('banana')">🍌 Banana</button>
+          <button class="fs-btn"        data-fruit="orange" onclick="setFruit('orange')">🍊 Orange</button>
         </div>
       </div>
-      <div class="dbh-right">
-        <div class="db-chip">🌡 4 °C</div>
-        <div class="db-chip">💧 72%</div>
-        <button class="db-scan-btn" onclick="triggerScan()">↻ Scan now</button>
+      <div class="dtp-right">
+        <span class="dtp-chip" id="lastUpdated">—</span>
+        <button class="dtp-btn" onclick="manualRefresh()">↻</button>
       </div>
     </div>
   </div>
 
-  <!-- Alert -->
-  <div class="db-alert" id="dbAlert">
-    <span>⚠</span>
-    <div class="da-body">
-      <strong>Rotten produce detected</strong>
-      <span id="alertNames">Banana, Mango</span>
+  <!-- Rotten alert (only shown when something is rotten) -->
+  <div class="dash-alerts-wrap">
+    <div class="rotten-alert" id="dashAlert" style="display:none">
+      <span>⚠️</span> <strong>Rotten detected:</strong> <span id="alertNames"></span>
+      <button onclick="this.parentElement.style.display='none'">Dismiss</button>
     </div>
-    <button onclick="document.getElementById('dbAlert').style.display='none'">Dismiss</button>
   </div>
 
-  <div class="db-body">
-
-    <!-- Stat tiles -->
-    <div class="db-stat-row">
-      <div class="db-stat">
-        <div class="ds-label">Fresh</div>
-        <div class="ds-val fresh-col" id="freshNum">4</div>
-      </div>
-      <div class="db-stat">
-        <div class="ds-label">Rotten</div>
-        <div class="ds-val rotten-col" id="rottenNum">2</div>
-      </div>
-      <div class="db-stat">
-        <div class="ds-label">Total</div>
-        <div class="ds-val" id="totalNum">6</div>
-      </div>
-      <div class="db-stat wide-stat">
-        <div class="ds-label">Freshness score</div>
-        <div class="ds-val">67<span class="ds-unit">%</span></div>
-        <div class="ds-bar"><div class="ds-fill" id="scoreFill" style="width:67%"></div></div>
-      </div>
-    </div>
-
-    <!-- Fruit cards + Log side by side -->
-    <div class="db-main-grid">
-
-      <!-- Fruit cards -->
-      <div class="db-cards-area">
-        <div class="db-area-label">Freshness report</div>
-        <div class="db-cards" id="fruitCards"></div>
-        <div class="scan-overlay" id="scanOverlay">
-          <div class="so-beam"></div>
-          <p>Analysing produce…</p>
+  <div class="bento">
+    <!-- Overview -->
+    <div class="b-card b-dark b-overview">
+      <div class="bov-top">
+        <div>
+          <div class="bov-label">Overview</div>
+          <div class="bov-sub" id="overviewUpdated">—</div>
         </div>
+        <div class="bov-pill" id="overviewStatus">—</div>
       </div>
-
-      <!-- Log -->
-      <div class="db-log-area">
-        <div class="db-area-label">Alert log</div>
-        <ul class="db-log" id="alertLog">
-          <li class="log-row rotten"><span class="lr-emoji">🍌</span><div class="lr-info"><strong>Banana</strong><span>Rotten · 87%</span></div><time>Just now</time><span class="lr-tag rt">Rotten</span></li>
-          <li class="log-row rotten"><span class="lr-emoji">🥭</span><div class="lr-info"><strong>Mango</strong><span>Rotten · 79%</span></div><time>2m ago</time><span class="lr-tag rt">Rotten</span></li>
-          <li class="log-row fresh"><span class="lr-emoji">🍎</span><div class="lr-info"><strong>Apple</strong><span>Fresh · 94%</span></div><time>5m ago</time><span class="lr-tag ft">Fresh</span></li>
-          <li class="log-row fresh"><span class="lr-emoji">🍊</span><div class="lr-info"><strong>Orange</strong><span>Fresh · 91%</span></div><time>8m ago</time><span class="lr-tag ft">Fresh</span></li>
-          <li class="log-row fresh"><span class="lr-emoji">🍓</span><div class="lr-info"><strong>Strawberry</strong><span>Fresh · 78%</span></div><time>10m ago</time><span class="lr-tag ft">Fresh</span></li>
-          <li class="log-row fresh"><span class="lr-emoji">🍇</span><div class="lr-info"><strong>Grapes</strong><span>Fresh · 83%</span></div><time>12m ago</time><span class="lr-tag ft">Fresh</span></li>
-        </ul>
+      <div class="arc-wrap">
+        <svg viewBox="0 0 180 110" class="arc-svg">
+          <path class="arc-track" d="M 20 98 A 80 80 0 0 1 160 98"/>
+          <path class="arc-active" id="arcFill" d="M 20 98 A 80 80 0 0 1 160 98" stroke-dasharray="0 251" stroke-linecap="round"/>
+        </svg>
+        <div class="arc-val"><div class="arc-pct" id="arcPct">—</div><div class="arc-lbl">fresh</div></div>
       </div>
-
+      <div class="tally">
+        <div class="t-item"><div class="t-num fresh-c" id="freshNum">—</div><div class="t-lbl">Fresh</div></div>
+        <div class="t-sep"></div>
+        <div class="t-item"><div class="t-num rotten-c" id="rottenNum">—</div><div class="t-lbl">Rotten</div></div>
+        <div class="t-sep"></div>
+        <div class="t-item"><div class="t-num" id="totalNum">3</div><div class="t-lbl">Total</div></div>
+      </div>
+      <!-- Device indicator -->
+      <div class="bsc-device" style="margin-top:16px">
+        <span class="bsc-dot"></span> ESP32-CAM · ThingsBoard
+      </div>
     </div>
+
+    <!-- Apple -->
+    <div class="b-card b-white b-fruit" id="card-apple">
+      <div class="bf-top"><span class="bf-emoji">🍎</span><div class="bf-dot" id="dot-apple"></div></div>
+      <div class="bf-name">Apple</div><div class="bf-status" id="status-apple">—</div>
+      <div class="bf-scores">
+        <div class="bfs"><span class="bfs-l">Fresh</span><div class="bfs-bar"><div class="bfs-f fresh-f" id="fresh-bar-apple" style="width:0%"></div></div><span class="bfs-v" id="fresh-val-apple">—</span></div>
+        <div class="bfs"><span class="bfs-l">Rotten</span><div class="bfs-bar"><div class="bfs-f rotten-f" id="rotten-bar-apple" style="width:0%"></div></div><span class="bfs-v" id="rotten-val-apple">—</span></div>
+      </div>
+    </div>
+
+    <!-- Detection log -->
+    <div class="b-card b-white b-log">
+      <div class="blog-header"><span class="blog-title">Scan history</span><span class="blog-count" id="logCount">0</span></div>
+      <ul id="alertLog"><li class="blog-empty">No scans yet</li></ul>
+    </div>
+
+    <!-- Banana -->
+    <div class="b-card b-green b-fruit" id="card-banana">
+      <div class="bf-top"><span class="bf-emoji">🍌</span><div class="bf-dot" id="dot-banana"></div></div>
+      <div class="bf-name">Banana</div><div class="bf-status" id="status-banana">—</div>
+      <div class="bf-scores">
+        <div class="bfs"><span class="bfs-l">Fresh</span><div class="bfs-bar"><div class="bfs-f fresh-f" id="fresh-bar-banana" style="width:0%"></div></div><span class="bfs-v" id="fresh-val-banana">—</span></div>
+        <div class="bfs"><span class="bfs-l">Rotten</span><div class="bfs-bar"><div class="bfs-f rotten-f" id="rotten-bar-banana" style="width:0%"></div></div><span class="bfs-v" id="rotten-val-banana">—</span></div>
+      </div>
+    </div>
+
+    <!-- Orange -->
+    <div class="b-card b-purple b-fruit" id="card-orange">
+      <div class="bf-top"><span class="bf-emoji">🍊</span><div class="bf-dot" id="dot-orange"></div></div>
+      <div class="bf-name">Orange</div><div class="bf-status" id="status-orange">—</div>
+      <div class="bf-scores">
+        <div class="bfs"><span class="bfs-l">Fresh</span><div class="bfs-bar"><div class="bfs-f fresh-f" id="fresh-bar-orange" style="width:0%"></div></div><span class="bfs-v" id="fresh-val-orange">—</span></div>
+        <div class="bfs"><span class="bfs-l">Rotten</span><div class="bfs-bar"><div class="bfs-f rotten-f" id="rotten-bar-orange" style="width:0%"></div></div><span class="bfs-v" id="rotten-val-orange">—</span></div>
+      </div>
+    </div>
+
   </div>
 </section>
 
-
-<!-- ══════════════════════
-  FOOTER
-══════════════════════ -->
+<!-- ══════════════ FOOTER ══════════════ -->
 <footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-logo">SmartFridge<span>AI</span></div>
-    <p class="footer-desc">An IoT project using ESP32-CAM + machine learning to detect fruit freshness in real time.</p>
-    <div class="footer-bottom">
-      <span>© 2025 SmartFridge AI Project</span>
-      <span>Built with ESP32-CAM · Python · JavaScript</span>
-    </div>
+  <div class="sf-logo">🥬 <strong>SmartFridgeAI</strong></div>
+  <p>An IoT project — ESP32-CAM · ML model · ThingsBoard · Web dashboard</p>
+  <div class="sf-bottom">
+    <span>© 2025 SmartFridge AI Project</span>
+    <span>Built with ESP32-CAM · Python · JavaScript · ThingsBoard</span>
   </div>
 </footer>
 
