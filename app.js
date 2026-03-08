@@ -9,34 +9,29 @@
 const TB_CONFIG = {
   host:     'https://thingsboard.cloud',
   deviceId: 'f99fdac0-10a4-11f1-b5a7-93241ed57bdc',
-  jwtToken: '60iIEYd7Dt1HSR2tCNLD',
+  username: 'adwaitharun2005@gmail.com',
+  password: 'adwaith2005',
 };
+
+let tbJwt = null;
 
 const POLL_MS = 5000;   // poll interval (ms)
 
-// ── Fruit definitions ────────────────────────────
-const FRUITS = [
-  { id: 'apple',  emoji: '🍎', name: 'Apple'  },
-  { id: 'banana', emoji: '🍌', name: 'Banana' },
-  { id: 'orange', emoji: '🍊', name: 'Orange' },
-];
+const ITEM = { id: 'scanned', emoji: '🥦', name: 'Scanned Item' };
 
 // ── Demo fallback seed data ──────────────────────
 const DEMO = {
-  apple:  { status: 'fresh',  freshScore: 92, rottenScore: 8  },
-  banana: { status: 'rotten', freshScore: 18, rottenScore: 82 },
-  orange: { status: 'fresh',  freshScore: 87, rottenScore: 13 },
+  status: 'fresh', freshScore: 92, rottenScore: 8
 };
 
 // ── State ────────────────────────────────────────
-let state       = JSON.parse(JSON.stringify(DEMO));
-let log         = [];
-let lastScan    = null;
-let timer       = null;
-let liveMode    = false;   // true once ThingsBoard responds
+let state = JSON.parse(JSON.stringify(DEMO));
+let log = [];
+let lastScan = null;
+let timer = null;
+let liveMode = false;   // true once ThingsBoard responds
 
-// Which fruit card does the current scan update?
-let ACTIVE_FRUIT = 'apple';
+// Single item logic
 
 // ── DOM helpers ──────────────────────────────────
 const $   = id => document.getElementById(id);
@@ -71,51 +66,82 @@ function initReveal() {
 //  ESP32 publishes: fresh_score (0–1), rotten_score (0–1), status
 //  Result is applied to the fruit selected in the topbar
 // ══════════════════════════════════════════════════
+async function getThingsBoardJWT() {
+  const res = await fetch(`${TB_CONFIG.host}/api/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      username: TB_CONFIG.username,
+      password: TB_CONFIG.password
+    })
+  });
+  if (!res.ok) throw new Error(`ThingsBoard Auth failed: ${res.status}`);
+  const data = await res.json();
+  return data.token;
+}
+
 async function fetchTB() {
+  if (!tbJwt) {
+    tbJwt = await getThingsBoardJWT();
+  }
+
   const keys = 'fresh_score,rotten_score,status,temperature,humidity';
   const url  = `${TB_CONFIG.host}/api/plugins/telemetry/DEVICE/${TB_CONFIG.deviceId}/values/timeseries?keys=${keys}`;
-  const res  = await fetch(url, {
-    headers: { 'X-Authorization': `Bearer ${TB_CONFIG.jwtToken}` }
+  
+  let res = await fetch(url, {
+    headers: { 'X-Authorization': `Bearer ${tbJwt}` }
   });
-  if (!res.ok) throw new Error(`ThingsBoard HTTP ${res.status}`);
-  const raw = await res.json();
-  const get = k => raw[k]?.length ? raw[k][0].value : null;
 
-  const rawStatus = get('status');
+  if (res.status === 401) {
+    tbJwt = await getThingsBoardJWT();
+    res = await fetch(url, {
+      headers: { 'X-Authorization': `Bearer ${tbJwt}` }
+    });
+  }
+
+  if (!res.ok) throw new Error(`ThingsBoard HTTP ${res.status}`);
+  
+  const raw = await res.json();
+  const getVal = k => raw[k]?.length ? raw[k][0].value : null;
+  const getTs = k => raw[k]?.length ? raw[k][0].ts : null;
+
+  const rawStatus = getVal('status');
   if (!rawStatus) throw new Error('No telemetry yet — waiting for ESP32 scan');
 
-  const freshRaw  = parseFloat(get('fresh_score')  ?? 0);
-  const rottenRaw = parseFloat(get('rotten_score') ?? 0);
+  const freshRaw = parseFloat(getVal('fresh_score') ?? 0);
+  const rottenRaw = parseFloat(getVal('rotten_score') ?? 0);
 
   // ESP32 Edge Impulse outputs 0–1; scale to 0–100
-  const freshScore  = Math.round(freshRaw  * (freshRaw  <= 1 ? 100 : 1));
+  const freshScore = Math.round(freshRaw * (freshRaw <= 1 ? 100 : 1));
   const rottenScore = Math.round(rottenRaw * (rottenRaw <= 1 ? 100 : 1));
 
   return {
-    status:      rawStatus.toLowerCase(),
+    status: rawStatus.toLowerCase(),
     freshScore,
     rottenScore,
-    temperature: get('temperature'),
-    humidity:    get('humidity'),
+    temperature: getVal('temperature'),
+    humidity: getVal('humidity'),
+    lastScan: getTs('status') || getTs('fresh_score')
   };
 }
 
 function applyTBData(d) {
-  const fruit = FRUITS.find(f => f.id === ACTIVE_FRUIT);
-  if (!fruit) return;
-
-  const prev = state[fruit.id];
-  if (prev && prev.status !== d.status) {
-    pushLog(fruit, d.status, d.freshScore, d.rottenScore);
+  const prev = state;
+  // If status changed, push to log
+  if (prev && (prev.status !== d.status || prev.freshScore !== d.freshScore)) {
+    pushLog(ITEM, d.status, d.freshScore, d.rottenScore);
   }
-  state[fruit.id] = {
-    status:      d.status,
-    freshScore:  d.freshScore,
+  
+  state = {
+    status: d.status,
+    freshScore: d.freshScore,
     rottenScore: d.rottenScore,
   };
 
+  if (d.lastScan) lastScan = d.lastScan;
+
   if (d.temperature) set('tempChip', `🌡 ${parseFloat(d.temperature).toFixed(1)} °C`);
-  if (d.humidity)    set('humChip',  `💧 ${Math.round(d.humidity)}%`);
+  if (d.humidity) set('humChip', `💧 ${Math.round(d.humidity)}%`);
 }
 
 // ══════════════════════════════════════════════════
@@ -126,7 +152,6 @@ async function poll() {
   try {
     const d = await fetchTB();
     applyTBData(d);
-    lastScan = Date.now();
     liveMode = true;
 
     // Hide the setup banner once live
@@ -140,11 +165,8 @@ async function poll() {
 
     // Gently drift demo values so the dashboard doesn't look frozen
     if (!liveMode) {
-      for (const f of FRUITS) {
-        const d = state[f.id];
-        d.freshScore  = Math.round(clamp(d.freshScore  + (Math.random() * 4 - 2), 0, 100));
-        d.rottenScore = Math.round(clamp(d.rottenScore + (Math.random() * 4 - 2), 0, 100));
-      }
+      state.freshScore = Math.round(clamp(state.freshScore + (Math.random() * 4 - 2), 0, 100));
+      state.rottenScore = Math.round(clamp(state.rottenScore + (Math.random() * 4 - 2), 0, 100));
     }
   }
   render();
@@ -155,16 +177,8 @@ function startPolling() {
 }
 
 // ══════════════════════════════════════════════════
-//  FRUIT SELECTOR (topbar buttons)
+//  (Removed fruit selector logic)
 // ══════════════════════════════════════════════════
-function setFruit(fruitId) {
-  ACTIVE_FRUIT = fruitId;
-  document.querySelectorAll('.fs-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.fruit === fruitId);
-  });
-  clearInterval(timer);
-  poll().finally(startPolling);
-}
 
 // ══════════════════════════════════════════════════
 //  MANUAL REFRESH (↻ button)
@@ -206,60 +220,54 @@ function setConn(st) {
 //  RENDER
 // ══════════════════════════════════════════════════
 function render() {
-  const fresh  = FRUITS.filter(f => state[f.id]?.status === 'fresh');
-  const rotten = FRUITS.filter(f => state[f.id]?.status === 'rotten');
-  const score  = Math.round((fresh.length / FRUITS.length) * 100);
+  const isFresh = state.status === 'fresh';
+  const freshScore = Math.round(state.freshScore);
+  const rottenScore = Math.round(state.rottenScore);
 
-  set('freshNum',  fresh.length);
-  set('rottenNum', rotten.length);
-  set('totalNum',  FRUITS.length);
-  set('arcPct',    score + '%');
+  set('freshNum', freshScore + '%');
+  set('rottenNum', rottenScore + '%');
+  set('arcPct', freshScore + '%');
 
   const arc = $('arcFill');
   if (arc) {
-    const len = Math.round((score / 100) * 251);
+    const len = Math.round((freshScore / 100) * 251);
     arc.setAttribute('stroke-dasharray', `${len} 251`);
-    arc.style.stroke = score >= 67 ? '#4ADE80' : score >= 34 ? '#FBBF24' : '#F87171';
+    arc.style.stroke = freshScore >= 67 ? '#4ADE80' : freshScore >= 34 ? '#FBBF24' : '#F87171';
   }
 
   const pill = $('overviewStatus');
   if (pill) {
-    pill.textContent        = rotten.length === 0 ? '✓ All fresh' : `⚠ ${rotten.length} rotten`;
-    pill.style.background   = rotten.length === 0 ? 'rgba(74,222,128,0.15)' : 'rgba(248,113,113,0.18)';
+    pill.textContent = isFresh ? '✓ Fresh item' : `⚠ Rotten item`;
+    pill.style.background = isFresh ? 'rgba(74,222,128,0.15)' : 'rgba(248,113,113,0.18)';
   }
 
   const ts = lastScan ? timeAgo(lastScan) : '—';
   set('overviewUpdated', lastScan ? `Updated ${ts}` : 'Awaiting scan');
-  set('lastUpdated',     lastScan ? `Updated ${ts}` : '—');
+  set('lastUpdated', lastScan ? `Updated ${ts}` : '—');
 
   if (lastScan) {
-    const d  = new Date(lastScan);
+    const d = new Date(lastScan);
     const hm = `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
-    set('lastScanTime',   hm);
-    set('lastScanDetail', `${d.toLocaleDateString()} · ${FRUITS.length} fruits`);
+    set('lastScanTime', hm);
+    set('lastScanDetail', `${d.toLocaleDateString()}`);
   }
 
-  // Fruit cards
-  for (const f of FRUITS) {
-    const d = state[f.id]; if (!d) continue;
-    const fresh  = Math.round(d.freshScore);
-    const rotten = Math.round(d.rottenScore);
-    const dot = $(`dot-${f.id}`);
-    if (dot) dot.className = `bf-dot ${d.status}`;
-    set(`status-${f.id}`, d.status.charAt(0).toUpperCase() + d.status.slice(1));
-    requestAnimationFrame(() => {
-      const fb = $(`fresh-bar-${f.id}`);  if (fb) fb.style.width = fresh  + '%';
-      const rb = $(`rotten-bar-${f.id}`); if (rb) rb.style.width = rotten + '%';
-    });
-    set(`fresh-val-${f.id}`,  `${fresh}%`);
-    set(`rotten-val-${f.id}`, `${rotten}%`);
-  }
+  // Scanned item card
+  const dot = $(`dot-scanned`);
+  if (dot) dot.className = `bf-dot ${state.status}`;
+  set(`status-scanned`, state.status.charAt(0).toUpperCase() + state.status.slice(1));
+  requestAnimationFrame(() => {
+    const fb = $(`fresh-bar-scanned`); if (fb) fb.style.width = freshScore + '%';
+    const rb = $(`rotten-bar-scanned`); if (rb) rb.style.width = rottenScore + '%';
+  });
+  set(`fresh-val-scanned`, `${freshScore}%`);
+  set(`rotten-val-scanned`, `${rottenScore}%`);
 
   // Rotten alert banner
   const alertEl = $('dashAlert');
   if (alertEl) {
-    if (rotten.length) {
-      set('alertNames', rotten.map(f => f.name).join(', '));
+    if (!isFresh) {
+      set('alertNames', 'Scanned Item');
       alertEl.style.display = 'flex';
     } else {
       alertEl.style.display = 'none';
@@ -295,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initReveal();
 
   // Show demo data immediately — no blank dashboard while waiting
-  for (const f of FRUITS) pushLog(f, state[f.id].status, state[f.id].freshScore, state[f.id].rottenScore);
+  pushLog(ITEM, state.status, state.freshScore, state.rottenScore);
   lastScan = Date.now();
   render();
 

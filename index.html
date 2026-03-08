@@ -126,9 +126,7 @@
         Precision over coverage.
       </p>
       <div class="tag-cloud">
-        <span class="tag">🍎 Apple</span>
-        <span class="tag">🍌 Banana</span>
-        <span class="tag">🍊 Orange</span>
+        <span class="tag">Any Fruit/Veg</span>
         <span class="tag">Fresh → Rotten</span>
         <span class="tag">Confidence score</span>
         <span class="tag">Real-time alerts</span>
@@ -163,9 +161,8 @@
         The moment a banana goes bad, you know.
       </p>
       <div class="alert-demo">
-        <div class="ad-row"><span>🍌</span><div><strong>Banana</strong><small>Rotten detected · 87% confidence</small></div><span class="ad-tag rotten">⚠ Alert</span></div>
-        <div class="ad-row fresh-row"><span>🍎</span><div><strong>Apple</strong><small>Fresh confirmed · 94% confidence</small></div><span class="ad-tag fresh">✓ OK</span></div>
-        <div class="ad-row fresh-row"><span>🍊</span><div><strong>Orange</strong><small>Fresh confirmed · 91% confidence</small></div><span class="ad-tag fresh">✓ OK</span></div>
+        <div class="ad-row"><span>🥦</span><div><strong>Scanned Item</strong><small>Rotten detected · 87% confidence</small></div><span class="ad-tag rotten">⚠ Alert</span></div>
+        <div class="ad-row fresh-row"><span>🍎</span><div><strong>Scanned Item</strong><small>Fresh confirmed · 94% confidence</small></div><span class="ad-tag fresh">✓ OK</span></div>
       </div>
     </section>
 
@@ -198,11 +195,8 @@
         <span class="dtp-title">Live Fridge</span>
         <div class="dtp-pill"><span class="dtb-dot" id="connDot"></span><span id="connLabel">Connecting…</span></div>
       </div>
-      <div class="dtp-center">
+      <div class="dtp-center" style="display:none">
         <div class="fruit-selector" id="fruitSelector">
-          <button class="fs-btn active" data-fruit="apple"  onclick="setFruit('apple')">🍎 Apple</button>
-          <button class="fs-btn"        data-fruit="banana" onclick="setFruit('banana')">🍌 Banana</button>
-          <button class="fs-btn"        data-fruit="orange" onclick="setFruit('orange')">🍊 Orange</button>
         </div>
       </div>
       <div class="dtp-right">
@@ -238,11 +232,9 @@
         <div class="arc-val"><div class="arc-pct" id="arcPct">—</div><div class="arc-lbl">fresh</div></div>
       </div>
       <div class="tally">
-        <div class="t-item"><div class="t-num fresh-c" id="freshNum">—</div><div class="t-lbl">Fresh</div></div>
+        <div class="t-item"><div class="t-num fresh-c" id="freshNum">—</div><div class="t-lbl">Score (F)</div></div>
         <div class="t-sep"></div>
-        <div class="t-item"><div class="t-num rotten-c" id="rottenNum">—</div><div class="t-lbl">Rotten</div></div>
-        <div class="t-sep"></div>
-        <div class="t-item"><div class="t-num" id="totalNum">3</div><div class="t-lbl">Total</div></div>
+        <div class="t-item"><div class="t-num rotten-c" id="rottenNum">—</div><div class="t-lbl">Score (R)</div></div>
       </div>
       <!-- Device indicator -->
       <div class="bsc-device" style="margin-top:16px">
@@ -250,13 +242,13 @@
       </div>
     </div>
 
-    <!-- Apple -->
-    <div class="b-card b-white b-fruit" id="card-apple">
-      <div class="bf-top"><span class="bf-emoji">🍎</span><div class="bf-dot" id="dot-apple"></div></div>
-      <div class="bf-name">Apple</div><div class="bf-status" id="status-apple">—</div>
+    <!-- Unknown Scanned Item -->
+    <div class="b-card b-white b-fruit" id="card-scanned">
+      <div class="bf-top"><span class="bf-emoji" id="emoji-scanned">🥦</span><div class="bf-dot" id="dot-scanned"></div></div>
+      <div class="bf-name">Last Scanned Item</div><div class="bf-status" id="status-scanned">—</div>
       <div class="bf-scores">
-        <div class="bfs"><span class="bfs-l">Fresh</span><div class="bfs-bar"><div class="bfs-f fresh-f" id="fresh-bar-apple" style="width:0%"></div></div><span class="bfs-v" id="fresh-val-apple">—</span></div>
-        <div class="bfs"><span class="bfs-l">Rotten</span><div class="bfs-bar"><div class="bfs-f rotten-f" id="rotten-bar-apple" style="width:0%"></div></div><span class="bfs-v" id="rotten-val-apple">—</span></div>
+        <div class="bfs"><span class="bfs-l">Fresh</span><div class="bfs-bar"><div class="bfs-f fresh-f" id="fresh-bar-scanned" style="width:0%"></div></div><span class="bfs-v" id="fresh-val-scanned">—</span></div>
+        <div class="bfs"><span class="bfs-l">Rotten</span><div class="bfs-bar"><div class="bfs-f rotten-f" id="rotten-bar-scanned" style="width:0%"></div></div><span class="bfs-v" id="rotten-val-scanned">—</span></div>
       </div>
     </div>
 
@@ -264,26 +256,6 @@
     <div class="b-card b-white b-log">
       <div class="blog-header"><span class="blog-title">Scan history</span><span class="blog-count" id="logCount">0</span></div>
       <ul id="alertLog"><li class="blog-empty">No scans yet</li></ul>
-    </div>
-
-    <!-- Banana -->
-    <div class="b-card b-green b-fruit" id="card-banana">
-      <div class="bf-top"><span class="bf-emoji">🍌</span><div class="bf-dot" id="dot-banana"></div></div>
-      <div class="bf-name">Banana</div><div class="bf-status" id="status-banana">—</div>
-      <div class="bf-scores">
-        <div class="bfs"><span class="bfs-l">Fresh</span><div class="bfs-bar"><div class="bfs-f fresh-f" id="fresh-bar-banana" style="width:0%"></div></div><span class="bfs-v" id="fresh-val-banana">—</span></div>
-        <div class="bfs"><span class="bfs-l">Rotten</span><div class="bfs-bar"><div class="bfs-f rotten-f" id="rotten-bar-banana" style="width:0%"></div></div><span class="bfs-v" id="rotten-val-banana">—</span></div>
-      </div>
-    </div>
-
-    <!-- Orange -->
-    <div class="b-card b-purple b-fruit" id="card-orange">
-      <div class="bf-top"><span class="bf-emoji">🍊</span><div class="bf-dot" id="dot-orange"></div></div>
-      <div class="bf-name">Orange</div><div class="bf-status" id="status-orange">—</div>
-      <div class="bf-scores">
-        <div class="bfs"><span class="bfs-l">Fresh</span><div class="bfs-bar"><div class="bfs-f fresh-f" id="fresh-bar-orange" style="width:0%"></div></div><span class="bfs-v" id="fresh-val-orange">—</span></div>
-        <div class="bfs"><span class="bfs-l">Rotten</span><div class="bfs-bar"><div class="bfs-f rotten-f" id="rotten-bar-orange" style="width:0%"></div></div><span class="bfs-v" id="rotten-val-orange">—</span></div>
-      </div>
     </div>
 
   </div>
